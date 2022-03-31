@@ -23,7 +23,7 @@ const thoughtController = {
           .catch(err => res.json(err));
       },
 
-    // remove comment
+    // remove thought
   removeThought({ params }, res) {
     Thought.findOneAndDelete({ _id: params.thoughtId })
       .then(deletedThought => {
