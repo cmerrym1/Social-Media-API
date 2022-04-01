@@ -29,9 +29,9 @@ const UserSchema = new Schema({
 );
 
 // get total count of reactions on retrieval
-UserSchema.virtual('friendsCount').get(function() {
-    return this.friends.length;
-  });
+UserSchema.virtual('thoughtCount').get(function() {
+  return this.thoughts.reduce((total, thought) => total + thought.reactions.length + 1, 0);
+});
 
 // create the User model using UserSchema
 const User = model('User', UserSchema);

@@ -1,4 +1,29 @@
-const { Schema, model } = require('mongoose');
+const { Schema, model, Types } = require('mongoose');
+
+const ReactionSchema = new Schema(
+  {
+     // set custom id to avoid confusion with parent thought _id
+     reactionId: {
+      type: Schema.Types.ObjectId,
+      default: () => new Types.ObjectId()
+    },
+    reactionBody: {
+      type: String
+    },
+    username: {
+      type: String
+    },
+    createdAt: {
+      type: Date,
+      default: Date.now
+    }
+  },
+  {
+    toJSON: {
+      getters: true
+    }
+  }
+);
 
 const ThoughtSchema = new Schema({
   username: {
@@ -11,7 +36,7 @@ const ThoughtSchema = new Schema({
     type: Date,
     default: Date.now
   },
-  reactions: [
+  reactions: [ReactionSchema,
     {
         type: Schema.Types.ObjectId,
         ref: 'Reactions'
@@ -21,15 +46,16 @@ const ThoughtSchema = new Schema({
   {
     toJSON: {
       virtuals: true,
+      getters: true
     },
     id: false
   }
 );
 
 // get total count of reactions on retrieval
-//ThoughtSchema.virtual('reactionCount').get(function() {
-    //return this.reactions.length;
-  //});
+ThoughtSchema.virtual('reactionCount').get(function() {
+    return this.reactions.length;
+  });
 
 const Thought = model('Thought', ThoughtSchema);
 
