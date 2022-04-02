@@ -11,7 +11,9 @@ const ReactionSchema = new Schema(
       type: String
     },
     username: {
-      type: String
+      type: String,
+      required: true,
+      trim:true
     },
     createdAt: {
       type: Date,
